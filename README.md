@@ -13,3 +13,7 @@ green-energy stock returns and evaluates a central modeling question:
 
 The empirical study uses daily OHLCV data for 17 green-energy-related equities
 from Yahoo Finance and evaluates 5-, 10-, and 20-day forward return forecasts.
+
+## Research Workflow
+
+![Research workflow](docs/graphic_abstract.png)
