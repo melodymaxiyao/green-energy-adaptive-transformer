@@ -2,28 +2,24 @@
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-SRC = Path(__file__).resolve().parents[1] / "src"
-sys.path.insert(0, str(SRC))
-
-from data.build_dataset import (  # noqa: E402
+from green_energy_transformer.data.build_dataset import (
     build_ticker_dataset,
     completed_weekly_window,
     reconstruct_weekly_from_daily,
 )
-from data.panel import (  # noqa: E402
+from green_energy_transformer.data.panel import (
     PanelDataset,
     apply_normalizer,
     chronological_split,
     fit_train_only_normalizer,
     load_final_panel,
 )
-from data.universe import (  # noqa: E402
+from green_energy_transformer.data.universe import (
     BOUNDARY_PURGE,
     DAILY_LOOKBACK,
     FINAL_TICKERS,
