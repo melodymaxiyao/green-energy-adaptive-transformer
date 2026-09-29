@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import sys
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,18 +12,14 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
-SRC = Path(__file__).resolve().parents[1] / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
-
-from data.panel import (  # noqa: E402
+from green_energy_transformer.data.panel import (
     PanelDataset,
     apply_normalizer,
     fit_train_only_normalizer,
     load_final_panel,
 )
-from evaluation.metrics import evaluate_predictions  # noqa: E402
-from training.train import (  # noqa: E402
+from green_energy_transformer.evaluation.metrics import evaluate_predictions
+from green_energy_transformer.training.train import (
     ModelInputs,
     TrainingProtocol,
     TrainingResult,

@@ -17,17 +17,20 @@ from common import (
     save_table,
     targets_for,
 )
-from data.universe import FORECAST_HORIZONS
-from evaluation.metrics import evaluate_predictions
-from models.baselines import (
+from green_energy_transformer.data.universe import FORECAST_HORIZONS
+from green_energy_transformer.evaluation.metrics import evaluate_predictions
+from green_energy_transformer.models.baselines import (
     build_lstm_model,
     build_swim_model,
     build_transformer_model,
     fit_ridge_with_validation,
     flatten_ridge_features,
 )
-from models.multiscale import build_multiscale_model
-from training.train import MULTISCALE_PROTOCOL, NEURAL_BASELINE_PROTOCOL
+from green_energy_transformer.models.multiscale import build_multiscale_model
+from green_energy_transformer.training.train import (
+    MULTISCALE_PROTOCOL,
+    NEURAL_BASELINE_PROTOCOL,
+)
 
 
 def _forecast_row(

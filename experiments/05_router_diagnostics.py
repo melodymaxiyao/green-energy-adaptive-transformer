@@ -8,9 +8,12 @@ from pathlib import Path
 import pandas as pd
 
 from common import save_table
-from data.universe import FINAL_TICKERS, FORECAST_HORIZONS
-from evaluation.inference import SEEDS, loss_difference_by_seed_date
-from evaluation.router import (
+from green_energy_transformer.data.universe import FINAL_TICKERS, FORECAST_HORIZONS
+from green_energy_transformer.evaluation.inference import (
+    SEEDS,
+    loss_difference_by_seed_date,
+)
+from green_energy_transformer.evaluation.router import (
     build_router_sample_metrics,
     cross_seed_stability,
     dominant_scale_usage,

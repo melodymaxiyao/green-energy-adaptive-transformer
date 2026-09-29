@@ -14,9 +14,9 @@ from common import (
     prepare_experiment_data,
     save_table,
 )
-from data.universe import FORECAST_HORIZONS
-from models.multiscale import build_multiscale_model
-from training.train import MULTISCALE_PROTOCOL
+from green_energy_transformer.data.universe import FORECAST_HORIZONS
+from green_energy_transformer.models.multiscale import build_multiscale_model
+from green_energy_transformer.training.train import MULTISCALE_PROTOCOL
 
 MECHANISMS = ("single", "fixed", "static", "adaptive")
 SINGLE_PATCHES = {

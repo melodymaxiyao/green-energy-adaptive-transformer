@@ -17,16 +17,16 @@ from common import (
     router_weight_frame,
     save_table,
 )
-from data.universe import FORECAST_HORIZONS
-from evaluation.inference import (
+from green_energy_transformer.data.universe import FORECAST_HORIZONS
+from green_energy_transformer.evaluation.inference import (
     SEEDS,
     bootstrap_inference,
     hac_inference,
     loss_difference_by_date,
     loss_difference_by_seed_date,
 )
-from models.multiscale import build_multiscale_model
-from training.train import MULTISCALE_PROTOCOL
+from green_energy_transformer.models.multiscale import build_multiscale_model
+from green_energy_transformer.training.train import MULTISCALE_PROTOCOL
 
 MECHANISMS = ("adaptive", "static")
 
