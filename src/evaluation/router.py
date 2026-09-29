@@ -77,11 +77,17 @@ def static_weight_references(static_weights: pd.DataFrame) -> pd.DataFrame:
     missing = sorted(required - set(static_weights.columns))
     if missing:
         raise ValueError(f"Static weight table is missing columns: {missing}")
-    references = (
-        static_weights.groupby(keys, sort=False)[list(WEIGHT_COLUMNS)]
-        .mean()
-        .reset_index()
-    )
+    rows = []
+    for key, group in static_weights.groupby(keys, sort=False):
+        group_values = group[list(WEIGHT_COLUMNS)].to_numpy(dtype=np.float64)
+        mean_values = np.mean(group_values, axis=0, dtype=np.float64)
+        rows.append(
+            {
+                **dict(zip(keys, key)),
+                **dict(zip(WEIGHT_COLUMNS, mean_values)),
+            }
+        )
+    references = pd.DataFrame(rows, columns=keys + list(WEIGHT_COLUMNS))
     values = references[list(WEIGHT_COLUMNS)].to_numpy(dtype=np.float64)
     if not np.isfinite(values).all():
         raise ValueError("Static reference contains non-finite weights")
