@@ -389,7 +389,7 @@ The tests cover:
 Run:
 
 ```bash
-pytest
+python -m pytest
 ```
 
 ---
