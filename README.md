@@ -83,3 +83,51 @@ Weekly OHLCV bars are constructed from Daily observations using:
 Only **completed weeks** are available to the model at each forecast anchor, preventing unfinished-week information from entering the input.
 
 The final aligned panel contains **43,571 stock-date observations**, with identical retained observations across Daily-only, Weekly-only, and Daily+Weekly configurations.
+
+## Model Architecture
+
+The proposed model uses separate **Daily** and **Weekly** branches. Each branch learns representations across multiple temporal scales before the two resolutions are combined through late fusion.
+
+### Multi-scale experts
+
+Each resolution-specific branch contains four scale experts:
+
+| Branch | Candidate patch sizes |
+| --- | --- |
+| Daily | 5, 10, 20, 30 trading days |
+| Weekly | 2, 4, 8, 13 weeks |
+
+Each expert applies:
+
+1. input projection with fixed sinusoidal positional encoding;
+2. patchification at its assigned temporal scale;
+3. intra-patch multi-head attention;
+4. valid-observation-aware pooling;
+5. occupancy-aware patch readout;
+6. inter-patch attention;
+7. feed-forward transformation and layer normalization.
+
+The shared architecture uses:
+
+| Hyperparameter | Value |
+| --- | ---: |
+| Embedding dimension | 32 |
+| Attention heads | 4 |
+| Feed-forward dimension | 64 |
+| Dropout | 0.1 |
+
+### Adaptive scale routing
+
+For the Adaptive variant, the four expert representations within each branch are concatenated and passed through a dense router:
+
+`128 → 32 → 4 → Softmax`
+
+The resulting weights form a **dense, observation-dependent mixture** of all four scale experts. Routing is performed independently within the Daily and Weekly branches; the router does not choose between the two resolutions.
+
+### Daily–Weekly late fusion
+
+For the Daily+Weekly configuration, the 32-dimensional Daily and Weekly branch representations are concatenated into a 64-dimensional vector and passed through:
+
+`64 → 64 → 1`
+
+with a ReLU hidden layer and a final linear scalar output for return prediction.
