@@ -48,3 +48,38 @@ This design isolates three questions:
 - **Adaptive vs. Static:** Does making scale weights observation-dependent provide additional predictive value?
 
 The Daily and Weekly branches use separate within-resolution scale aggregation. When both resolutions are used, their branch representations are combined only afterward through late fusion.
+
+## Data and Experimental Setup
+
+The empirical study uses **17 green-energy-related U.S.-listed equities**:
+
+`AES`, `BEP`, `BLDP`, `BLNK`, `CSIQ`, `CWEN`, `DQ`, `ENPH`, `FCEL`, `FSLR`, `HASI`, `JKS`, `NEE`, `ORA`, `PLUG`, `RUN`, and `SEDG`.
+
+Daily OHLCV data are retrieved exclusively from **Yahoo Finance** using `yfinance` with adjusted prices. Weekly observations are reconstructed deterministically from the Daily series rather than downloaded as a separate data source.
+
+### Forecasting setup
+
+| Component | Specification |
+| --- | --- |
+| Daily input window | 90 trading days |
+| Weekly input window | 26 completed weekly bars |
+| Daily patch sizes | 5, 10, 20, 30 days |
+| Weekly patch sizes | 2, 4, 8, 13 weeks |
+| Forecast horizons | 5, 10, 20 trading days |
+| Target | Forward adjusted-price log return |
+| Panel | Exact common-date intersection across all 17 stocks |
+| Split | Chronological 70% / 15% / 15% Train / Validation / Test |
+| Boundary purge | Final 20 common dates removed from Train and Validation |
+| Normalization | Fit on Train only, separately by ticker, resolution, and feature |
+
+Weekly OHLCV bars are constructed from Daily observations using:
+
+- Open: first
+- High: maximum
+- Low: minimum
+- Close: last
+- Volume: sum
+
+Only **completed weeks** are available to the model at each forecast anchor, preventing unfinished-week information from entering the input.
+
+The final aligned panel contains **43,571 stock-date observations**, with identical retained observations across Daily-only, Weekly-only, and Daily+Weekly configurations.
